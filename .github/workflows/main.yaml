@@ -1,5 +1,8 @@
 name: Build & Release
 
+permissions:
+  contents: write
+
 on:
   workflow_call:
     inputs:
@@ -66,5 +69,7 @@ jobs:
         with:
           tag_format: ${{ inputs.path }}-v${version}
           working_directory: ${{ inputs.path }}
+          extra_plugins: |
+            conventional-changelog-conventionalcommits@7.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
