@@ -48,6 +48,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Configure runtime
+        run: |
+          sudo apt update && sudo apt install -y moreutils
+
       - name: Ensure package.json
         run: |
           cd ${{ inputs.path }}
