@@ -3,7 +3,7 @@ name: Build & Release
 on:
   workflow_call:
     secrets:
-      GITHUB_TOKEN:
+      G_TOKEN:
         required: true
     inputs:
       path:
@@ -59,4 +59,4 @@ jobs:
           branch: main
           ci: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
