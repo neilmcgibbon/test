@@ -1,8 +1,5 @@
 name: Release iam-role-aws-load-balancer-controller
 
-permissions:
-  contents: write
-
 on:
   push:
     branches:
@@ -15,4 +12,3 @@ jobs:
     uses: ./.github/workflows/main.yaml
     with:
       path: iam-role-aws-load-balancer-controller
-    secrets: inherit
