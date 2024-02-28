@@ -1,5 +1,8 @@
 name: Release iam-role-aws-load-balancer-controller
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
