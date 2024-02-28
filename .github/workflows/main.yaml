@@ -18,7 +18,7 @@ jobs:
       - name: Configure runtime
         run: |
           git clone https://github.com/tfutils/tfenv.git ~/.tfenv 
-          echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >> ~/.bash_profile
+          echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
           tfenv install ${TERRAFORM_VERSION} && tfenv use ${TERRAFORM_VERSION}
           terraform version
 
