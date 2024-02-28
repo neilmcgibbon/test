@@ -10,7 +10,8 @@
               {"type": "chore", "release": "patch"}
             ]
           }],
-          "@semantic-release/release-notes-generator"
+          "@semantic-release/release-notes-generator",
+          "@semantic-release/github"
         ]
       }
   }
