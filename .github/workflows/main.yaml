@@ -70,5 +70,3 @@ jobs:
         with:
           tag_format: ${{ inputs.path }}-v${version}
           working_directory: ${{ inputs.path }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
