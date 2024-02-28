@@ -59,10 +59,12 @@ jobs:
             cp ../.github/package.json.template package.json
             jq --arg releasename "${{ inputs.path }}" '.name = $releasename' package.json | sponge package.json
           fi
+          cat package.json
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         with:
           tag_format: ${{ inputs.path }}-v${version}
+          working_directory: ${{ inputs.path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
