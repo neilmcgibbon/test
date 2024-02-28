@@ -11,10 +11,7 @@
             ]
           }],
           "@semantic-release/release-notes-generator",
-          "@semantic-release/github",
-          ["@semantic-release/exec", {
-            "verifyReleaseCmd": "echo ${nextRelease.version} > ./.RELEASE_VERSION"
-          }]
+          "@semantic-release/github"
         ]
       }
   }
