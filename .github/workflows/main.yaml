@@ -15,10 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure runtime
+      - name: Install tfenv
         run: |
           git clone https://github.com/tfutils/tfenv.git ~/.tfenv 
           echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+
+      - name: Install Terraform
+        run: |
           tfenv install ${TERRAFORM_VERSION} && tfenv use ${TERRAFORM_VERSION}
           terraform version
 
