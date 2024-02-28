@@ -48,27 +48,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure runtime
-        run: |
-          sudo apt update && sudo apt install -y moreutils
-          npm install -g \
-            semantic-release@19.0.5 \
-            @semantic-release/exec@6.0.3 \
-            semantic-release-monorepo \
-            @semantic-release/commit-analyzer@9.0.2 \
-            conventional-changelog-conventionalcommits \
-            @semantic-release/github@8.1.0 \
-            @semantic-release/release-notes-generator@10.0.3
-
-      - name: Ensure package.json
-        run: |
-          cd ${{ inputs.path }}
-          if [ ! -f "package.json" ]; then
-            cp ../.github/package.json.template package.json
-            jq --arg releasename "${{ inputs.path }}" '.name = $releasename' package.json | sponge package.json
-          fi
-
-      - name: Release
-        run: |
-          cd ${{ inputs.path }}
-          npm exec -- semantic-release -e semantic-release-monorepo
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          tag_format: ${{ inputs.path }}-v${version}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
