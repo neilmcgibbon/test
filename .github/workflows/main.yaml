@@ -8,10 +8,10 @@ on:
         type: string
 
 jobs:
-  validate-terraform:
+  validate:
     runs-on: ubuntu-latest
     env:
-      TERRAFORM_VERSION: "1.7.4"
+      TERRAFORM_VERSION: "1.7.3"
     steps:
       - uses: actions/checkout@v4
 
@@ -42,6 +42,8 @@ jobs:
           terraform validate
 
   release:
+    needs:
+      - validate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
