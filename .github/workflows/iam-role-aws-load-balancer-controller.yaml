@@ -1,0 +1,14 @@
+name: Release iam-role-aws-load-balancer-controller
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "iam-role-aws-load-balancer-controller/**"
+
+jobs:
+  call-main:
+    uses: ./.github/workflows/main.yaml
+    with:
+      path: iam-role-aws-load-balancer-controller

@@ -1,0 +1,70 @@
+name: Build & Release
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+
+jobs:
+  validate-terraform:
+    runs-on: ubuntu-latest
+    env:
+      TERRAFORM_VERSION: "1.7.4"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure runtime
+        run: |
+          git clone https://github.com/tfutils/tfenv.git ~/.tfenv 
+          sudo ln -s ~/.tfenv/bin/* /usr/local/bin
+          tfenv install ${TERRAFORM_VERSION} && tfenv use ${TERRAFORM_VERSION}
+          terraform version
+
+      - name: Check Terraform formatting
+        run: |
+          cd ${{ inputs.path }}
+          if [ `terraform fmt --list=true -diff=true -write=false | tee format-issues | wc -c` -ne 0 ]; then
+            echo "Some terraform files need be formatted, run 'terraform fmt' to fix"
+            echo "Formatting issues:"
+            cat format-issues
+            exit 1
+          fi
+
+      - name: Initialize and validate terraform
+        run: |
+          cd ${{ inputs.path }}
+          terraform init -input=false
+          terraform validate
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure runtime
+        run: |
+          sudo apt update && apt intall -y moreutils
+          npm install -g \
+            semantic-release@19.0.5 \
+            @semantic-release/exec@6.0.3 \
+            semantic-release-monorepo \
+            @semantic-release/commit-analyzer@9.0.2 \
+            conventional-changelog-conventionalcommits \
+            @semantic-release/github@8.1.0 \
+            @semantic-release/release-notes-generator@10.0.3
+
+      - name: Ensure package.json
+        run: |
+          cd ${{ inputs.path }}
+          if [ ! -f "package.json" ]; then
+            cp ../.github/package.json.template package.json
+            jq --arg releasename "${{ inputs.path }}" '.name = $releasename' package.json | sponge package.json
+          fi
+
+      - name: Release
+        run: |
+          cd ${{ inputs.path }}
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          npm exec -- semantic-release -e semantic-release-monorepo
