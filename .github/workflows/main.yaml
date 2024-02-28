@@ -50,7 +50,7 @@ jobs:
 
       - name: Configure runtime
         run: |
-          sudo apt update && apt install -y moreutils
+          sudo apt update && sudo apt install -y moreutils
           npm install -g \
             semantic-release@19.0.5 \
             @semantic-release/exec@6.0.3 \
